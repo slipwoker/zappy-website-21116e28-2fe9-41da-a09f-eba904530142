@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>יישומים תעשייתיים שמשדרגים כל מתקן — Mybee</title>
+    <meta name="description" content="ממחסני קירור ועד מפעלים תעשייתיים — Mybee מספקת יישומי ניטור טמפרטורה במקפיאים ומקררים ובקרת אנרגיה מתקדמת לכל סביבת עבודה מסחרית ותעשייתית.">
+    <meta name="keywords" content="ניטור טמפ במקפיאים ומקררים, יישומי בקרת אנרגיה, Mybee, בקר חיסכון אנרגיה מיזוג אוויר, ניהול מערכות קירור">
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: '21116e28-2fe9-41da-a09f-eba904530142',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+    <meta property="og:title" content="יישומים תעשייתיים שמשדרגים כל מתקן — Mybee">
+    <meta property="og:description" content="ממחסני קירור ועד מפעלים תעשייתיים — Mybee מספקת יישומי ניטור טמפרטורה במקפיאים ומקררים ובקרת אנרגיה מתקדמת לכל סביבת עבודה מסחרית ותעשייתית.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="יישומים תעשייתיים שמשדרגים כל מתקן — Mybee">
+    <meta name="twitter:description" content="ממחסני קירור ועד מפעלים תעשייתיים — Mybee מספקת יישומי ניטור טמפרטורה במקפיאים ומקררים ובקרת אנרגיה מתקדמת לכל סביבת עבודה מסחרית ותעשייתית.">
+    <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .skip-link { position: absolute; top: 0; left: 0; transform: translateY(-200%); padding: 12px 18px; background: var(--bg-dark, #1a1a1a); color: var(--text-light, #fff); font-weight: 600; border-radius: 0 0 8px 0; z-index: 10000; }
+    .skip-link:focus { transform: none; outline: 2px solid var(--ring, #fff); outline-offset: 2px; }
+    :focus-visible { outline: 2px solid var(--ring, currentColor); outline-offset: 3px; }
+  </style>
+
+
+  
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: var(--text-dark, #333) !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+      [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 10px !important; padding-right: 28px !important; }
+      .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus (exclude catalog sub-menus that use <a> children instead of <li>) */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))):not(:has(> a)), .sub-menu:not(:has(li)):not(:has(> a)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .navbar .sub-menu.mobile-expanded, .nav-menu .sub-menu.mobile-expanded, #navMenu .sub-menu.mobile-expanded { max-height: none !important; overflow-y: visible !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; padding: 0 !important; line-height: inherit !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: auto !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-dark) !important; position: static !important; flex-shrink: 0 !important; align-self: stretch !important; z-index: 2 !important; padding: 0 !important; margin: 0 !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-dark) !important; white-space: normal !important; }
+        .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+        [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 0 !important; padding-right: 28px !important; }
+        .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+        .nav-menu.active, #navMenu.active { max-width: 100vw !important; overflow-x: hidden !important; box-sizing: border-box !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-dark) !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+
+    <style id="zappy-widget-visibility">
+      html[dir="rtl"] .whatsapp-float { right: 20px !important; left: auto !important; }
+      html[dir="ltr"] .whatsapp-float, html:not([dir]) .whatsapp-float { left: 20px !important; right: auto !important; }
+      html[dir="rtl"] #mic-access-tool-general-button, html[dir="rtl"] .mic-access-tool-general-button,
+      html[dir="rtl"] #mic-init-access-tool .mic-access-tool-general-button,
+      html[dir="rtl"] #mic-init-access-tool #mic-access-tool-general-button,
+      html[dir="rtl"] ._access-icon { left: 20px !important; right: auto !important; }
+      html[dir="ltr"] #mic-access-tool-general-button, html[dir="ltr"] .mic-access-tool-general-button,
+      html[dir="ltr"] #mic-init-access-tool .mic-access-tool-general-button,
+      html[dir="ltr"] #mic-init-access-tool #mic-access-tool-general-button,
+      html[dir="ltr"] ._access-icon,
+      html:not([dir]) #mic-access-tool-general-button, html:not([dir]) .mic-access-tool-general-button,
+      html:not([dir]) #mic-init-access-tool .mic-access-tool-general-button,
+      html:not([dir]) #mic-init-access-tool #mic-access-tool-general-button,
+      html:not([dir]) ._access-icon { right: 20px !important; left: auto !important; }
+      @media (max-width: 768px) { .whatsapp-float { display: flex !important; } }
+      @media (min-width: 769px) { .whatsapp-float { display: flex !important; } }
+      @media (max-width: 768px) {
+        #mic-access-tool-general-button, .mic-access-tool-general-button,
+        #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+        ._access-icon { display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
+        #mic-access-tool-box.opened-mic-access-tool, .mic-access-tool-box.opened-mic-access-tool,
+        #mic-init-access-tool #mic-access-tool-box.opened-mic-access-tool {
+          visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;
+        }
+      }
+      @media (min-width: 769px) {
+        #mic-access-tool-general-button, .mic-access-tool-general-button,
+        #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+        ._access-icon { display: flex !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; }
+        #mic-access-tool-box.opened-mic-access-tool, .mic-access-tool-box.opened-mic-access-tool,
+        #mic-init-access-tool #mic-access-tool-box.opened-mic-access-tool {
+          visibility: visible !important; opacity: 1 !important; pointer-events: auto !important;
+        }
+      }
+    </style>
+</head>
+<body>
+<a class="skip-link" href="#main">דלג לתוכן הראשי</a>
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display: none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+
+  <button class="phone-header-btn" data-phone="" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+
+  <div class="nav-container">
+    <div class="nav-right-group"><div class="nav-brand">
+      <a href="/" class="logo-link"><img class="logo" src="/assets/site---------image-1.webp" alt="Mybee"></a>
+    </div><ul class="nav-menu" id="navMenu"><li><a href="/">בית</a></li><li><a href="/solutions">פתרונות</a></li><li><a href="/applications">יישומים</a></li></ul></div>
+
+    
+
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+<script>
+
+// Navbar Mobile Menu Toggle and Contrast Fix
+(function() {
+  // Use 'load' event instead of 'DOMContentLoaded' to ensure we run AFTER all other scripts
+  window.addEventListener('load', function() {
+    
+    // FIX MOBILE BUTTON CONTRAST
+    // Detect navbar background color and apply contrasting color to mobile buttons
+    const navbar = document.querySelector('.navbar, nav, header');
+    if (!navbar) {
+      console.log('[Navbar] Navbar element not found');
+      return;
+    }
+    
+    // DECLARE VARIABLES EARLY to avoid Temporal Dead Zone errors
+    // These are used in multiple places below
+    let mobileToggle = document.getElementById('mobileToggle') ||
+                       document.querySelector('.mobile-toggle') ||
+                       document.querySelector('.hamburger') ||
+                       document.querySelector('.hamburger-menu') ||
+                       document.querySelector('.menu-toggle') ||
+                       document.querySelector('.burger-menu') ||
+                       document.querySelector('[aria-label="Menu"]') ||
+                       document.querySelector('[aria-label="תפריט"]');
+    
+    const phoneBtn = document.querySelector('.phone-header-btn');
+    
+    const computedStyle = window.getComputedStyle(navbar);
+    let bgColor = computedStyle.backgroundColor;
+    
+    console.log('[Navbar] Initial navbar background:', bgColor);
+    
+    // Check if background is transparent or rgba with 0 alpha
+    const isTransparent = bgColor === 'transparent' || 
+                         bgColor === 'rgba(0, 0, 0, 0)' ||
+                         (bgColor.startsWith('rgba') && bgColor.includes(', 0)'));
+    
+    if (isTransparent) {
+      // Check for background-image or gradient
+      const bgImage = computedStyle.backgroundImage;
+      if (bgImage && bgImage !== 'none') {
+        console.log('[Navbar] Navbar has background image/gradient, using dark text');
+        bgColor = 'rgb(240, 240, 240)'; // Assume light background
+      } else {
+        // Transparent navbar - check body background
+        const bodyBg = window.getComputedStyle(document.body).backgroundColor;
+        console.log('[Navbar] Navbar transparent, using body background:', bodyBg);
+        bgColor = bodyBg;
+      }
+    }
+    
+    // Calculate luminance to determine if background is light or dark
+    const rgb = bgColor.match(/\d+/g);
+    if (rgb && rgb.length >= 3) {
+      const r = parseInt(rgb[0]);
+      const g = parseInt(rgb[1]);
+      const b = parseInt(rgb[2]);
+      const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      
+      // Mobile button colors are set by Claude's AI-generated CSS (same as .nav-menu a)
+      // No dynamic color overrides needed - colors come from the generated navbar CSS
+      console.log('[Navbar] Mobile button colors preserved from Claude CSS (luminance:', luminance.toFixed(2) + ')');
+      
+      // FIX ICON SIZES - Ensure SVGs are properly sized and visible
+      // INJECT CRITICAL CSS TO OVERRIDE ANY CONFLICTING RULES
+      const criticalCSS = document.createElement('style');
+      criticalCSS.id = 'zappy-mobile-nav-fix';
+      const htmlLang = document.documentElement.lang || 'en';
+      const htmlDir = document.documentElement.dir || 'ltr';
+      // Check both dir attribute AND lang for RTL detection
+      // dir="rtl" is the most reliable indicator
+      const isRTL = htmlDir === 'rtl' || htmlLang === 'he' || htmlLang === 'ar';
+      
+      criticalCSS.textContent = `
+        /* Hide mobile buttons on desktop, show only on mobile */
+        @media (min-width: 769px) {
+          .mobile-toggle,
+          .phone-header-btn {
+            display: none !important;
+          }
+        }
+        
+        /* Show and position mobile buttons correctly on mobile */
+        @media (max-width: 768px) {
+          .navbar,
+          nav.navbar {
+            min-height: 70px !important;
+          }
+
+          .mobile-toggle,
+          .phone-header-btn {
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            margin-top: auto !important;
+            margin-bottom: auto !important;
+            transform: none !important;
+            z-index: 1001 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            cursor: pointer !important;
+            padding: 6px !important;
+            background: none !important;
+            color: var(--nav-text, var(--text-dark)) !important;
+            touch-action: manipulation !important;
+            -webkit-tap-highlight-color: transparent !important;
+          }
+
+          html[data-zappy-site-type="ecommerce"] .phone-header-btn,
+          body[data-zappy-site-type="ecommerce"] .phone-header-btn,
+          html[data-zappy-site-type="ecommerce"] header .phone-header-btn,
+          html[data-zappy-site-type="ecommerce"] nav .phone-header-btn {
+            display: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+          }
+          
+          /* LTR positioning (default): hamburger LEFT, phone RIGHT */
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .mobile-toggle,
+          html[dir="ltr"] .mobile-toggle {
+            left: 12px !important;
+            right: auto !important;
+          }
+          html:not([dir="rtl"]):not([lang="he"]):not([lang="ar"]) .phone-header-btn,
+          html[dir="ltr"] .phone-header-btn {
+            right: 12px !important;
+            left: auto !important;
+          }
+          
+          /* RTL positioning: hamburger RIGHT, phone LEFT */
+          html[dir="rtl"] .mobile-toggle,
+          html[lang="he"] .mobile-toggle,
+          html[lang="ar"] .mobile-toggle {
+            right: 12px !important;
+            left: auto !important;
+          }
+          html[dir="rtl"] .phone-header-btn,
+          html[lang="he"] .phone-header-btn,
+          html[lang="ar"] .phone-header-btn {
+            left: 12px !important;
+            right: auto !important;
+          }
+          
+          /* CRITICAL: Ensure nav-container has min-height on mobile */
+          /* All children are positioned absolutely/fixed on mobile, so height:auto collapses to 0 */
+          .nav-container {
+            min-height: 70px !important;
+            position: relative !important;
+          }
+          
+          /* Ensure SVG icons are properly sized and inherit color */
+          .mobile-toggle svg,
+          .phone-header-btn svg {
+            width: 24px !important;
+            height: 24px !important;
+            /* Don't force display - let JavaScript control hamburger/close toggle */
+          }
+          
+          /* Reset nav-cta-container on mobile - remove desktop box-shadow/padding */
+          /* that creates a visible ghost box when CTA button is hidden */
+          .nav-cta-container {
+            box-shadow: none !important;
+            padding: 0 !important;
+          }
+          
+          /* Hide nav-cta-container entirely on mobile when there's no lang-switcher */
+          /* (only the CTA button is inside, and it's hidden on mobile) */
+          .nav-cta-container:not(:has(.lang-switcher)) {
+            display: none !important;
+          }
+          
+          /* CRITICAL: Prevent hero image fade gradient from bleeding over headline text */
+          /* The .image-fade-gradient has bottom: -30px (extends below parent) */
+          /* On mobile stacked layout, this overlaps the h1 text below the image */
+          .hero-image-column {
+            overflow: hidden !important;
+          }
+          .image-fade-gradient {
+            bottom: 0 !important;
+          }
+          
+          /* Hide desktop language switcher on mobile - hamburger menu handles it */
+          /* High specificity to override stored CSS */
+          .lang-switcher,
+          .nav-cta-container .lang-switcher,
+          .nav-container .lang-switcher,
+          .navbar .lang-switcher,
+          .navbar .nav-cta-container .lang-switcher {
+            display: none !important;
+          }
+        }
+      `;
+      
+      // Remove existing fix if present and inject new one
+      const existing = document.getElementById('zappy-mobile-nav-fix');
+      if (existing) existing.remove();
+      document.head.appendChild(criticalCSS);
+      
+      console.log('[Navbar] Critical CSS injected for mobile nav positioning');
+      
+      // ONLY apply inline positioning styles on mobile viewport
+      // On desktop, the CSS handles hiding these buttons with display: none
+      // Inline styles were breaking desktop layout by overriding CSS
+      const isMobileViewport = window.innerWidth <= 768;
+      
+      if (mobileToggle) {
+        // Icon sizing applies to all viewports for consistency
+        const hamburgerIcon = mobileToggle.querySelector('.hamburger-icon');
+        const closeIcon = mobileToggle.querySelector('.close-icon');
+        
+        if (hamburgerIcon) {
+          hamburgerIcon.style.setProperty('width', '24px', 'important');
+          hamburgerIcon.style.setProperty('height', '24px', 'important');
+          hamburgerIcon.style.setProperty('display', 'block', 'important'); // Show hamburger by default
+        }
+        if (closeIcon) {
+          closeIcon.style.setProperty('width', '24px', 'important');
+          closeIcon.style.setProperty('height', '24px', 'important');
+          closeIcon.style.setProperty('display', 'none', 'important'); // Hide close icon by default
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          mobileToggle.style.setProperty('position', 'absolute', 'important');
+          mobileToggle.style.setProperty('top', '0', 'important');
+          mobileToggle.style.setProperty('bottom', '0', 'important');
+          mobileToggle.style.setProperty('margin-top', 'auto', 'important');
+          mobileToggle.style.setProperty('margin-bottom', 'auto', 'important');
+          mobileToggle.style.setProperty('transform', 'none', 'important');
+          mobileToggle.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          
+          console.log('[Navbar] Mobile toggle positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          mobileToggle.style.removeProperty('position');
+          mobileToggle.style.removeProperty('top');
+          mobileToggle.style.removeProperty('transform');
+          mobileToggle.style.removeProperty('z-index');
+          mobileToggle.style.removeProperty('left');
+          mobileToggle.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared mobile toggle inline positioning');
+        }
+      }
+      
+      if (phoneBtn) {
+        // Icon sizing applies to all viewports
+        const phoneIcon = phoneBtn.querySelector('svg');
+        if (phoneIcon) {
+          phoneIcon.style.width = '24px';
+          phoneIcon.style.height = '24px';
+          phoneIcon.setAttribute('width', '24');
+          phoneIcon.setAttribute('height', '24');
+        }
+        
+        // ONLY set positioning inline styles on mobile
+        if (isMobileViewport) {
+          phoneBtn.style.setProperty('position', 'absolute', 'important');
+          phoneBtn.style.setProperty('top', '0', 'important');
+          phoneBtn.style.setProperty('bottom', '0', 'important');
+          phoneBtn.style.setProperty('margin-top', 'auto', 'important');
+          phoneBtn.style.setProperty('margin-bottom', 'auto', 'important');
+          phoneBtn.style.setProperty('transform', 'none', 'important');
+          phoneBtn.style.setProperty('z-index', '1001', 'important');
+          
+          // Clear any inline left/right so CSS can take over based on html[dir]
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          
+          console.log('[Navbar] Phone button positioning applied (mobile viewport)');
+        } else {
+          // On desktop, clear any positioning styles to let CSS handle it
+          phoneBtn.style.removeProperty('position');
+          phoneBtn.style.removeProperty('top');
+          phoneBtn.style.removeProperty('transform');
+          phoneBtn.style.removeProperty('z-index');
+          phoneBtn.style.removeProperty('left');
+          phoneBtn.style.removeProperty('right');
+          console.log('[Navbar] Desktop viewport - cleared phone button inline positioning');
+        }
+      }
+    } else {
+      console.log('[Navbar] Could not parse background color:', bgColor);
+    }
+    
+    // MOBILE MENU TOGGLE
+    // Re-query in case DOM changed (mobileToggle already declared at top of function)
+    mobileToggle = document.getElementById('mobileToggle') ||
+                   document.querySelector('.mobile-toggle') ||
+                   document.querySelector('.hamburger') ||
+                   document.querySelector('.hamburger-menu') ||
+                   document.querySelector('.menu-toggle') ||
+                   document.querySelector('.burger-menu') ||
+                   document.querySelector('[aria-label="Menu"]') ||
+                   document.querySelector('[aria-label="תפריט"]');
+    
+    // EXPANDED SEARCH: Find nav menu by ID or class
+    const navMenu = document.getElementById('navMenu') ||
+                  document.querySelector('.nav-menu') ||
+                  document.querySelector('.nav-links') ||
+                  document.querySelector('nav ul:not(.submenu)');
+    
+    if (!mobileToggle || !navMenu) {
+      console.log('[Navbar] Mobile toggle or menu not found:', { toggle: !!mobileToggle, menu: !!navMenu });
+      return;
+    }
+    
+    // Ensure navMenu has ID for CSS targeting
+    if (!navMenu.id) {
+      navMenu.id = 'navMenu';
+    }
+    
+    console.log('[Navbar] Initializing mobile menu...');
+    
+    // Remove any existing event listeners by cloning the button
+    const newToggle = mobileToggle.cloneNode(true);
+    mobileToggle.parentNode.replaceChild(newToggle, mobileToggle);
+    
+    // Toggle menu handler (shared by click and touchend)
+    function handleToggle(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+      const closeIcon = newToggle.querySelector('.close-icon');
+      const isActive = navMenu.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed');
+      } else {
+        // Open menu
+        navMenu.classList.add('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'none', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'block', 'important');
+        document.body.style.overflow = 'hidden';
+        console.log('[Navbar] Menu opened');
+      }
+    }
+    
+    // Use click for desktop/emulation and touchend as iOS Safari fallback.
+    // Prevent double-fire with a timestamp guard.
+    var lastToggleTime = 0;
+    function guardedToggle(e) {
+      var now = Date.now();
+      if (now - lastToggleTime < 300) return;
+      lastToggleTime = now;
+      handleToggle(e);
+    }
+    
+    newToggle.addEventListener('click', guardedToggle);
+    newToggle.addEventListener('touchend', guardedToggle);
+    
+    // Close menu when clicking nav links (but NOT dropdown toggles)
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        // Don't close if it's a dropdown child (unless it's a real navigation link)
+        if (this.getAttribute('href') === '#') return;
+        
+        const hamburgerIcon = newToggle.querySelector('.hamburger-icon');
+        const closeIcon = newToggle.querySelector('.close-icon');
+        
+        navMenu.classList.remove('active');
+        if (hamburgerIcon) hamburgerIcon.style.setProperty('display', 'block', 'important');
+        if (closeIcon) closeIcon.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+        console.log('[Navbar] Menu closed (link clicked)');
+      });
+    });
+    
+    // DROPDOWN MENU TOGGLE (for mobile and touch devices)
+    var dropdownToggles = navMenu.querySelectorAll('.dropdown-toggle');
+    dropdownToggles.forEach(function(toggle) {
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var parent = this.closest('.nav-dropdown');
+        if (!parent) return;
+        
+        // Close other open dropdowns at the same level
+        var siblings = parent.parentNode.querySelectorAll('.nav-dropdown.open');
+        siblings.forEach(function(sib) {
+          if (sib !== parent) sib.classList.remove('open');
+        });
+        
+        parent.classList.toggle('open');
+        console.log('[Navbar] Dropdown toggled:', parent.classList.contains('open') ? 'open' : 'closed');
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.nav-dropdown')) {
+        var openDropdowns = document.querySelectorAll('.nav-dropdown.open');
+        openDropdowns.forEach(function(dd) { dd.classList.remove('open'); });
+      }
+    });
+    
+    console.log('[Navbar] Dropdown handlers initialized for ' + dropdownToggles.length + ' dropdowns');
+    
+    // Phone button functionality (phoneBtn already declared at top of function)
+    if (phoneBtn) {
+      phoneBtn.addEventListener('click', function() {
+        // Get phone number from placeholder in page or use default
+        const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+        const phoneNumber = phoneLinks.length > 0 
+          ? phoneLinks[0].getAttribute('href').replace('tel:', '')
+          : '[business_phone]';
+        
+        window.location.href = 'tel:' + phoneNumber;
+        console.log('[Navbar] Phone button clicked');
+      });
+    }
+    
+    console.log('[Navbar] Mobile menu initialized successfully');
+    
+    // WhatsApp button visibility is now controlled via CSS (siteSettings).
+    // No JS-based desktop hiding — the button is visible on both mobile and desktop by default.
+  });
+})();
+
+</script>
+  
+  <main id="main">
+    <section class="applications-hero-band-section" data-layout-spec="יישומים-hero-band" dir="rtl">
+
+  <!-- Decorative honeycomb motif -->
+  <div class="ahb-honeycomb-deco" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 340 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g opacity="0.08">
+        <polygon points="40,10 70,10 85,36 70,62 40,62 25,36" fill="#C8963E"></polygon>
+        <polygon points="85,10 115,10 130,36 115,62 85,62 70,36" fill="#C8963E"></polygon>
+        <polygon points="130,10 160,10 175,36 160,62 130,62 115,36" fill="#C8963E"></polygon>
+        <polygon points="175,10 205,10 220,36 205,62 175,62 160,36" fill="#C8963E"></polygon>
+        <polygon points="62,48 92,48 107,74 92,100 62,100 47,74" fill="#C8963E"></polygon>
+        <polygon points="107,48 137,48 152,74 137,100 107,100 92,74" fill="#C8963E"></polygon>
+        <polygon points="152,48 182,48 197,74 182,100 152,100 137,74" fill="#C8963E"></polygon>
+        <polygon points="197,48 227,48 242,74 227,100 197,100 182,74" fill="#C8963E"></polygon>
+        <polygon points="40,86 70,86 85,112 70,138 40,138 25,112" fill="#C8963E"></polygon>
+        <polygon points="85,86 115,86 130,112 115,138 85,138 70,112" fill="#C8963E"></polygon>
+        <polygon points="130,86 160,86 175,112 160,138 130,138 115,112" fill="#C8963E"></polygon>
+        <polygon points="175,86 205,86 220,112 205,138 175,138 160,112" fill="#C8963E"></polygon>
+        <polygon points="62,124 92,124 107,150 92,176 62,176 47,150" fill="#C8963E"></polygon>
+        <polygon points="107,124 137,124 152,150 137,176 107,176 92,150" fill="#C8963E"></polygon>
+        <polygon points="152,124 182,124 197,150 182,176 152,176 137,150" fill="#C8963E"></polygon>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Intro block -->
+  <div class="ahb-container">
+    <div class="ahb-intro">
+      <span class="ahb-eyebrow">יישומי Mybee</span>
+      <h1 class="ahb-heading">חיסכון באנרגיה חכם — <br>לכל סביבת עבודה ותפעול</h1>
+      <p class="ahb-subtext">מלונות ואתרי נופש, מסעדות ומטבחים מסחריים, מבני משרדים ותעשייה, מתקני קירור והקפאה — מערכות Mybee מספקות שליטה מדויקת, חיסכון מוכח, ורוגע תפעולי בכל סביבה.</p>
+    </div>
+
+    <!-- Mosaic grid -->
+    <div class="ahb-mosaic">
+
+      <!-- Large tile - hotels/hospitality -->
+      <article class="ahb-tile ahb-tile--large">
+        <div class="ahb-tile-img-wrap">
+          <img loading="eager" fetchpriority="high" data-placeholder="applications-hero-band-image-1" data-context="Luxury hotel lobby or hotel corridor with modern HVAC vents visible on ceiling, warm natural lighting, elegant interior, hospitality setting, energy efficiency context, wide architectural shot" width="600" height="400" src="/assets/site-applications-hero-band-image-1.webp" alt="מלון עם מערכת בקרת אנרגיה חכמה" class="ahb-tile-img">
+          <div class="ahb-tile-overlay"></div>
+        </div>
+        <div class="ahb-tile-content">
+          <span class="ahb-tile-tag">מלונות ואירוח</span>
+          <h3 class="ahb-tile-title">ניהול אנרגיה חכם למלונות</h3>
+          <p class="ahb-tile-desc">שליטה מרכזית על מיזוג, חימום ומים חמים — חיסכון של עשרות אחוזים בחשבון החשמל.</p>
+        </div>
+      </article>
+
+      <!-- Small tile 1 - restaurants -->
+      <article class="ahb-tile ahb-tile--small">
+        <div class="ahb-tile-img-wrap">
+          <img loading="lazy" decoding="async" data-placeholder="applications-hero-band-image-2" data-context="Commercial restaurant kitchen with refrigeration units and freezer rooms, stainless steel surfaces, temperature monitoring equipment, industrial kitchen energy management" width="400" height="280" src="/assets/site-applications-hero-band-image-2.webp" alt="מסעדה עם בקרי קירור והקפאה" class="ahb-tile-img">
+          <div class="ahb-tile-overlay"></div>
+        </div>
+        <div class="ahb-tile-content">
+          <span class="ahb-tile-tag">מסעדות ומזון</span>
+          <h3 class="ahb-tile-title">ניטור חדרי קירור והקפאה</h3>
+          <p class="ahb-tile-desc">התראות בזמן אמת על חריגות טמפרטורה — הגנה על מלאי ועמידה בתקנות.</p>
+        </div>
+      </article>
+
+      <!-- Small tile 2 - commercial buildings -->
+      <article class="ahb-tile ahb-tile--small">
+        <div class="ahb-tile-img-wrap">
+          <img loading="lazy" decoding="async" data-placeholder="applications-hero-band-image-3" data-context="Modern commercial office building exterior or interior with visible air conditioning systems, HVAC units on rooftop, clean architectural lines, energy efficiency building management" width="400" height="280" src="/assets/site-applications-hero-band-image-3.webp" alt="מבנה מסחרי עם מערכת ניהול אנרגיה" class="ahb-tile-img">
+          <div class="ahb-tile-overlay"></div>
+        </div>
+        <div class="ahb-tile-content">
+          <span class="ahb-tile-tag">נכסים מסחריים</span>
+          <h3 class="ahb-tile-title">בקרה לבניינים ומשרדים</h3>
+          <p class="ahb-tile-desc">אוטומציה של מיזוג אוויר ודוד מים חמים — תפעול יעיל ועלויות נמוכות.</p>
+        </div>
+      </article>
+
+      <!-- Small tile 3 - industrial/boilers -->
+      <article class="ahb-tile ahb-tile--small">
+        <div class="ahb-tile-img-wrap">
+          <img loading="lazy" decoding="async" data-placeholder="applications-hero-band-image-4" data-context="Industrial boiler room or steam boiler system, pipes and pressure gauges, industrial heating management, hot water boiler with modern control panel, facility management environment" width="400" height="280" src="/assets/site-applications-hero-band-image-4.webp" alt="מתקן תעשייתי עם בקר דוד קיטור ומים חמים" class="ahb-tile-img">
+          <div class="ahb-tile-overlay"></div>
+        </div>
+        <div class="ahb-tile-content">
+          <span class="ahb-tile-tag">תעשייה ותשתיות</span>
+          <h3 class="ahb-tile-title">ניהול דודי מים וקיטור</h3>
+          <p class="ahb-tile-desc">בקרה מדויקת על דודי קיטור ומים חמים — בטיחות, יעילות ועמידה בתקנות.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- Bottom scalloped divider -->
+  <div class="ahb-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 L0,50 Q60,30 120,50 Q180,70 240,50 Q300,30 360,50 Q420,70 480,50 Q540,30 600,50 Q660,70 720,50 Q780,30 840,50 Q900,70 960,50 Q1020,30 1080,50 Q1140,70 1200,50 L1200,80 Z" fill="#FAF7F2"></path>
+    </svg>
+  </div>
+
+</section>
+
+<section class="applications-use-cases-section" data-layout-spec="יישומים-use-cases" dir="rtl">
+
+  <!-- Section Header -->
+  <div class="uc-header-container">
+    <div class="uc-header-inner">
+      <span class="uc-eyebrow">יישומי Mybee בפועל</span>
+      <h2 class="uc-main-title">פתרונות חכמים לכל סביבת פעילות</h2>
+      <p class="uc-subtitle">בקרי חיסכון באנרגיה של Mybee מותאמים לעסקים שבהם אמינות, בטיחות ויעילות תפעולית הן עניין של שגרה יומיומית.</p>
+    </div>
+  </div>
+
+  <!-- Use Case 1: Hotels -->
+  <article class="uc-block uc-block--1">
+    <div class="uc-block-inner">
+
+      <!-- Text Side -->
+      <div class="uc-text-side">
+        <div class="uc-text-content">
+          <span class="uc-tag">מלונאות ואירוח</span>
+          <h3 class="uc-block-title">יעילות אקלים במלונות ומתחמי אירוח</h3>
+          <p class="uc-block-desc">מלונות ומתחמי אירוח מתמודדים עם עשרות יחידות מיזוג הפועלות בו-זמנית לאורך כל שעות היממה. בקר חיסכון האנרגיה במיזוג אוויר של Mybee מנתח את עומסי הצריכה בזמן אמת ומכוון את מערכות ה-HVAC לפעולה אופטימלית — מבלי לפגוע בנוחות האורחים.</p>
+          <p class="uc-block-desc">התוצאה: ירידה משמעותית בהוצאות החשמל, הפחתת בלאי על ציוד, וניהול מרכזי שמאפשר לצוות ה-maintenance לפעול בצורה יזומה ולא תגובתית.</p>
+          <ul class="uc-benefits-list">
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--primary)" opacity="0.15"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>חיסכון של עד 30% בצריכת חשמל של מערכות מיזוג</span>
+            </li>
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--primary)" opacity="0.15"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>ניטור מרכזי לכל יחידות האקלים במבנה</span>
+            </li>
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--primary)" opacity="0.15"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>התאמה אוטומטית לעומס אורחים ולשעות פעילות</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Image Side -->
+      <div class="uc-image-side">
+        <div class="uc-image-wrapper">
+          <div class="uc-image-backplate uc-backplate--1" aria-hidden="true"></div>
+          <figure class="uc-figure">
+            <img loading="lazy" decoding="async" data-placeholder="applications-use-cases-image-1" data-context="A warm, inviting hotel lobby or corridor with modern HVAC vents visible in the ceiling, soft ambient lighting, clean interior design with natural materials. A facility manager checking a digital control panel on the wall. Warm tones, premium hospitality feel, natural light." width="600" height="450" src="/assets/site-applications-use-cases-image-1.webp" alt="ניהול אקלים חכם במלון — בקר מיזוג אוויר של Mybee">
+          </figure>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- Divider line between blocks -->
+  <div class="uc-separator" aria-hidden="true"></div>
+
+  <!-- Use Case 2: Restaurants & Kitchens -->
+  <article class="uc-block uc-block--2">
+    <div class="uc-block-inner">
+
+      <!-- Text Side -->
+      <div class="uc-text-side">
+        <div class="uc-text-content">
+          <span class="uc-tag">מסעדות ומטבחים מסחריים</span>
+          <h3 class="uc-block-title">פיקוח על קירור והקפאה במטבחים מסחריים</h3>
+          <p class="uc-block-desc">במסעדות ובמטבחים מסחריים, תקלה בחדר קירור או הקפאה אינה רק הפסד כלכלי — היא עלולה לסכן בטיחות מזון ולגרום לעצירת פעילות. בקר ההתראות לחדרי קירור והקפאה של Mybee מנטר טמפרטורות 24/7 ושולח התראות מיידיות לכל חריגה.</p>
+          <p class="uc-block-desc">הצוות מקבל התראה בזמן אמת לטלפון או ללוח הבקרה, עוד לפני שנגרם נזק למלאי. בנוסף, ניתוח דפוסי הצריכה של מערכות הקירור מאפשר לזהות בעיות מוקדם ולתזמן תחזוקה מונעת.</p>
+          <ul class="uc-benefits-list">
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--secondary)" opacity="0.15"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>ניטור טמפ' במקפיאים ומקררים — רציף ואוטומטי</span>
+            </li>
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--secondary)" opacity="0.15"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>התראות SMS ודוא"ל על חריגת טמפרטורה</span>
+            </li>
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--secondary)" opacity="0.15"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>שמירה על עמידה בתקני בטיחות מזון ורגולציה</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Image Side -->
+      <div class="uc-image-side">
+        <div class="uc-image-wrapper">
+          <div class="uc-image-backplate uc-backplate--2" aria-hidden="true"></div>
+          <figure class="uc-figure">
+            <img loading="lazy" decoding="async" data-placeholder="applications-use-cases-image-2" data-context="A professional commercial kitchen with stainless steel refrigeration units and walk-in cooler doors. A chef or kitchen manager reviewing a temperature monitoring display panel mounted on the wall. Clean, organized, warm overhead lighting, food safety environment. Realistic operational setting." width="600" height="450" src="/assets/site-applications-use-cases-image-2.webp" alt="ניטור קירור והקפאה במסעדה — בקר התראות Mybee">
+          </figure>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- Divider line between blocks -->
+  <div class="uc-separator" aria-hidden="true"></div>
+
+  <!-- Use Case 3: Multi-site Facilities -->
+  <article class="uc-block uc-block--3">
+    <div class="uc-block-inner">
+
+      <!-- Text Side -->
+      <div class="uc-text-side">
+        <div class="uc-text-content">
+          <span class="uc-tag">מתקנים טכניים ואתרים מרובים</span>
+          <h3 class="uc-block-title">ניהול דודי מים חמים וקיטור — שליטה ובטיחות בכל אתר</h3>
+          <p class="uc-block-desc">מתקנים תעשייתיים, בתי חולים, מכוני ספא ואתרי ייצור הנשענים על דודי מים חמים ומערכות קיטור זקוקים לבקרה מדויקת ולנראות מלאה — גם כשמדובר בכמה אתרים בו-זמנית. בקרי Mybee לדודי מים וקיטור מספקים שליטה מרחוק, לוגים אוטומטיים ומנגנוני התראה שמונעים כשלים קריטיים.</p>
+          <p class="uc-block-desc">מנהלי אנרגיה ויועצי קיימות מוצאים בפתרונות Mybee כלי ניתוח שמאפשר להם לזהות בזבוז, לייעל לוחות זמנים ולדווח על חיסכון בצריכת אנרגיה — על פני כל האתרים שבאחריותם.</p>
+          <ul class="uc-benefits-list">
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--accent)" opacity="0.2"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>ניהול מרכזי של מספר אתרים מממשק אחד</span>
+            </li>
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--accent)" opacity="0.2"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>התראות בטיחות ולוגים אוטומטיים לדודי קיטור</span>
+            </li>
+            <li>
+              <span class="uc-benefit-icon"><svg data-element-type="icon" data-icon-type="svg" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="var(--accent)" opacity="0.2"></circle><path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+              <span>דיווח מפורט לצורכי ביקורת ועמידה ברגולציה</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Image Side -->
+      <div class="uc-image-side">
+        <div class="uc-image-wrapper">
+          <div class="uc-image-backplate uc-backplate--3" aria-hidden="true"></div>
+          <figure class="uc-figure">
+            <img loading="lazy" decoding="async" data-placeholder="applications-use-cases-image-3" data-context="An industrial boiler room or utility plant with large hot water or steam boilers, pipes, and a digital control panel with monitoring screens. A facility engineer reviewing data on a tablet or wall-mounted display. Clean industrial setting, warm ambient lighting, professional environment." width="600" height="450" src="/assets/site-applications-use-cases-image-3.webp" alt="ניהול דודי מים חמים וקיטור — בקר Mybee למתקנים טכניים">
+          </figure>
+        </div>
+      </div>
+
+    </div>
+  </article>
+
+  <!-- Bottom Divider: angled soft stone into dark olive-gray -->
+  <div class="uc-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,90 L0,28 L1440,0 L1440,90 Z" fill="#1C2B1F"></path>
+    </svg>
+  </div>
+
+</section>
+
+<section class="applications-case-studies-section" dir="rtl" data-layout-spec="יישומים-case-studies">
+  <!-- Decorative topographic pattern overlay -->
+  <div class="cs-topo-bg" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <g fill="none" stroke="rgba(199,164,76,0.07)" stroke-width="1">
+        <path d="M0,120 Q150,100 300,130 T600,110 T900,125 T1200,105"></path>
+        <path d="M0,160 Q150,140 300,170 T600,150 T900,165 T1200,145"></path>
+        <path d="M0,200 Q150,180 300,210 T600,190 T900,205 T1200,185"></path>
+        <path d="M0,240 Q150,220 300,250 T600,230 T900,245 T1200,225"></path>
+        <path d="M0,280 Q150,260 300,290 T600,270 T900,285 T1200,265"></path>
+        <path d="M0,320 Q150,300 300,330 T600,310 T900,325 T1200,305"></path>
+        <path d="M0,360 Q150,340 300,370 T600,350 T900,365 T1200,345"></path>
+        <path d="M0,400 Q150,380 300,410 T600,390 T900,405 T1200,385"></path>
+        <path d="M0,440 Q150,420 300,450 T600,430 T900,445 T1200,425"></path>
+        <path d="M0,480 Q150,460 300,490 T600,470 T900,485 T1200,465"></path>
+        <path d="M0,520 Q150,500 300,530 T600,510 T900,525 T1200,505"></path>
+        <path d="M-100,80 Q50,60 200,90 T500,70 T800,85 T1100,65 T1400,80"></path>
+        <path d="M-100,560 Q50,540 200,570 T500,550 T800,565 T1100,545 T1400,560"></path>
+      </g>
+    </svg>
+  </div>
+
+  <div class="cs-container">
+    <!-- Section Header -->
+    <header class="cs-header">
+      <span class="cs-eyebrow">יישומים מוכחים</span>
+      <h2 class="cs-title">מה Mybee משיגה בשטח</h2>
+      <p class="cs-subtitle">תרחישים אמיתיים מעסקים שהטמיעו בקרי חיסכון באנרגיה — ורואים את התוצאות בחשבון החשמל ובשקט הנפשי.</p>
+    </header>
+
+    <!-- Cards Grid -->
+    <div class="cs-grid">
+
+      <!-- Card 1: Hotel HVAC -->
+      <article class="cs-card">
+        <div class="cs-card-top">
+          <div class="cs-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="4" y="8" width="24" height="16" rx="3" stroke="currentColor" stroke-width="1.8"></rect>
+              <path d="M4 14h24" stroke="currentColor" stroke-width="1.8"></path>
+              <circle cx="10" cy="11" r="1.2" fill="currentColor"></circle>
+              <path d="M16 18h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+              <path d="M8 24v2M16 24v2M24 24v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <span class="cs-sector-label">מלונאות ואירוח</span>
+        </div>
+
+        <h3 class="cs-card-title">מלון בוטיק — ניהול מיזוג חכם בחדרי האורחים</h3>
+        <p class="cs-card-scenario">מלון בן 80 חדרים בתל אביב סבל מצריכת חשמל גבוהה במיזוג האוויר, בעיקר בשעות שבהן החדרים ריקים. מערכת Mybee לבקרת חיסכון באנרגיה במיזוג אוויר זיהתה נוכחות בחדר בזמן אמת והתאימה את פעולת המזגנים אוטומטית — ללא פגיעה בנוחות האורחים.</p>
+        <div class="cs-outcome-chip">
+          <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+          <span>חיסכון של <strong>31%</strong> בצריכת החשמל תוך 3 חודשים</span>
+        </div>
+        <a href="#contact" class="cs-text-cta">
+          רוצים תוצאות דומות במלון שלכם?
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <!-- Card 2: Cold Storage -->
+      <article class="cs-card">
+        <div class="cs-card-top">
+          <div class="cs-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="5" y="4" width="22" height="24" rx="3" stroke="currentColor" stroke-width="1.8"></rect>
+              <path d="M5 14h22" stroke="currentColor" stroke-width="1.8"></path>
+              <path d="M12 9h8M12 19h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+              <circle cx="16" cy="9" r="0" fill="currentColor"></circle>
+              <path d="M16 6v6M13.5 7.5l5 3M18.5 7.5l-5 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+              <path d="M16 16v6M13.5 17.5l5 3M18.5 17.5l-5 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <span class="cs-sector-label">לוגיסטיקה ומזון</span>
+        </div>
+
+        <h3 class="cs-card-title">מחסן קירור — ניטור טמפרטורה במקפיאים ומקררים</h3>
+        <p class="cs-card-scenario">רשת הפצת מזון קפוא עם 6 חדרי קירור והקפאה נדרשה לפתרון שיתריע בזמן אמת על חריגות טמפרטורה. בקר ההתראות של Mybee שלח התרעות SMS ואימייל מיידיות לאחראי הייצור — ומנע אירוע קלקול סחורה שעלותו הייתה עשרות אלפי שקלים.</p>
+        <div class="cs-outcome-chip cs-outcome-chip--secondary">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          <span>מניעת <strong>4 אירועי קלקול</strong> בשנה הראשונה לפעילות</span>
+        </div>
+        <a href="#contact" class="cs-text-cta">
+          לדיון מותאם לצרכי המחסן שלכם
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <!-- Card 3: Boiler Management -->
+      <article class="cs-card">
+        <div class="cs-card-top">
+          <div class="cs-icon-wrap">
+            <svg data-element-type="icon" data-icon-type="svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="8" y="10" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.8"></rect>
+              <path d="M12 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+              <circle cx="16" cy="17" r="2.5" stroke="currentColor" stroke-width="1.6"></circle>
+              <path d="M16 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+              <path d="M10 24l-2 4M22 24l2 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+              <path d="M13 17h-2M21 17h-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <span class="cs-sector-label">תעשייה ומפעלים</span>
+        </div>
+
+        <h3 class="cs-card-title">מפעל ייצור — ניהול דוד קיטור ומים חמים</h3>
+        <p class="cs-card-scenario">מפעל טקסטיל בצפון הארץ הפעיל דוד קיטור בשיטת ידנית שגרמה לבזבוז אנרגיה ולסיכוני בטיחות. פתרון ניהול הדוד של Mybee אוטמט את לוחות הזמנים, ניטר לחץ וטמפרטורה ברציפות, והפחית את עומס העבודה על הצוות התפעולי.</p>
+        <div class="cs-outcome-chip cs-outcome-chip--accent">
+          <i class="fa-solid fa-gauge-high" aria-hidden="true"></i>
+          <span>הפחתת <strong>24%</strong> בצריכת הגז ושיפור בטיחות מלא</span>
+        </div>
+        <a href="#contact" class="cs-text-cta">
+          נשמח לנתח את מערכת הדוד שלכם
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        </a>
+      </article>
+
+    </div>
+    <!-- End Cards Grid -->
+  </div>
+
+  <!-- Bottom Divider: Topographic fade into cream -->
+  <div class="cs-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,90 L0,48 Q60,38 120,52 T240,42 Q300,50 360,40 T480,46 Q540,38 600,50 T720,40 Q780,48 840,38 T960,44 Q1020,36 1080,48 T1200,42 L1200,90 Z" fill="#FAF7F2"></path>
+      <path d="M0,90 L0,62 Q80,55 160,66 T320,58 Q400,66 480,56 T640,62 Q720,54 800,64 T960,56 Q1040,64 1120,56 T1200,62 L1200,90 Z" fill="#FAF7F2" opacity="0.7"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="applications-reviews-section" data-layout-spec="יישומים-reviews" dir="rtl">
+  <!-- Decorative leaf motif -->
+  <div class="arr-leaf-motif" aria-hidden="true">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 240 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M200,10 C200,10 240,80 220,160 C200,240 140,300 60,310 C60,310 80,240 100,180 C120,120 160,60 200,10 Z" fill="#6F8A3A" opacity="0.07"></path>
+    </svg>
+  </div>
+
+  <div class="arr-container">
+
+    <!-- Intro block -->
+    <div class="arr-intro">
+      <span class="arr-eyebrow">מה אומרים עלינו</span>
+      <h2 class="arr-heading">לקוחות שחווים את ההבדל בכל יום</h2>
+      <p class="arr-subheading">מנהלי מתקנים, מפעילי עסקים ויועצי אנרגיה שבחרו ב-Mybee מדווחים על שקט תפעולי, חיסכון מדיד וביטחון מלא בניהול מערכות האנרגיה שלהם.</p>
+    </div>
+
+    <!-- Quote panels -->
+    <div class="arr-quotes-grid">
+
+      <!-- Quote 1 -->
+      <article class="arr-quote-card">
+        <div class="arr-quote-mark" aria-hidden="true">
+          <svg data-no-icon-edit="true" aria-hidden="true" width="48" height="36" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,36 L0,18 C0,8 6,2 18,0 L22,6 C16,8 13,12 13,18 L20,18 L20,36 Z M28,36 L28,18 C28,8 34,2 46,0 L48,6 C42,8 41,12 41,18 L48,18 L48,36 Z" fill="#6F8A3A" opacity="0.18"></path>
+          </svg>
+        </div>
+        <blockquote class="arr-quote-text">
+          "מאז שהתקנו את בקר חיסכון האנרגיה של Mybee במערכת המיזוג שלנו, ירדנו בכ-30% בצריכת החשמל של בית המלון. אבל מה שהפתיע אותי יותר מכל — הצוות כבר לא מתעסק עם כיוונונים ידניים. המערכת עובדת לבד, ואנחנו פשוט מקבלים דוחות."
+        </blockquote>
+        <footer class="arr-quote-author">
+          <div class="arr-author-avatar" aria-hidden="true">
+            <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+              <circle cx="20" cy="20" r="20" fill="#6F8A3A" opacity="0.12"></circle>
+              <circle cx="20" cy="16" r="7" fill="#6F8A3A" opacity="0.5"></circle>
+              <ellipse cx="20" cy="34" rx="12" ry="8" fill="#6F8A3A" opacity="0.35"></ellipse>
+            </svg>
+          </div>
+          <div class="arr-author-info">
+            <strong class="arr-author-name">אלון בן-דוד</strong>
+            <span class="arr-author-role">מנהל תפעול, מלון בוטיק — תל אביב</span>
+          </div>
+        </footer>
+        <div class="arr-card-accent-line" aria-hidden="true"></div>
+      </article>
+
+      <!-- Quote 2 -->
+      <article class="arr-quote-card">
+        <div class="arr-quote-mark" aria-hidden="true">
+          <svg data-no-icon-icon="true" aria-hidden="true" width="48" height="36" viewBox="0 0 48 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,36 L0,18 C0,8 6,2 18,0 L22,6 C16,8 13,12 13,18 L20,18 L20,36 Z M28,36 L28,18 C28,8 34,2 46,0 L48,6 C42,8 41,12 41,18 L48,18 L48,36 Z" fill="#C96F4A" opacity="0.18"></path>
+          </svg>
+        </div>
+        <blockquote class="arr-quote-text">
+          "יש לנו שלושה חדרי קירור והקפאה במסעדה. לפני Mybee, כל אזעקת טמפרטורה הגיעה אחרי שהנזק כבר נגרם. עכשיו אנחנו מקבלים התראה בזמן אמת לנייד, ויש לי שקט נפשי שלא הכרתי קודם. ניטור הטמפ' במקפיאים ומקררים שלנו פשוט עובד."
+        </blockquote>
+        <footer class="arr-quote-author">
+          <div class="arr-author-avatar arr-author-avatar--secondary" aria-hidden="true">
+            <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+              <circle cx="20" cy="20" r="20" fill="#C96F4A" opacity="0.12"></circle>
+              <circle cx="20" cy="16" r="7" fill="#C96F4A" opacity="0.5"></circle>
+              <ellipse cx="20" cy="34" rx="12" ry="8" fill="#C96F4A" opacity="0.35"></ellipse>
+            </svg>
+          </div>
+          <div class="arr-author-info">
+            <strong class="arr-author-name">מיכל רוזנברג</strong>
+            <span class="arr-author-role">בעלת ומנהלת מסעדה — חיפה</span>
+          </div>
+        </footer>
+        <div class="arr-card-accent-line arr-card-accent-line--secondary" aria-hidden="true"></div>
+      </article>
+
+    </div>
+    <!-- end quotes grid -->
+
+    <!-- CTA row -->
+    <div class="arr-cta-row">
+      <div class="arr-cta-divider" aria-hidden="true">
+        <svg data-no-icon-edit="true" aria-hidden="true" width="120" height="16" viewBox="0 0 120 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="8" x2="50" y2="8" stroke="#C7A44C" stroke-width="1.5" opacity="0.6"></line>
+          <circle cx="60" cy="8" r="4" fill="#C7A44C" opacity="0.7"></circle>
+          <line x1="70" y1="8" x2="120" y2="8" stroke="#C7A44C" stroke-width="1.5" opacity="0.6"></line>
+        </svg>
+      </div>
+      <p class="arr-cta-text">רוצים לראות איך Mybee יכולה לשנות את האופן שבו אתם מנהלים אנרגיה?</p>
+      <a href="/contact" class="arr-btn-primary">דברו איתנו</a>
+    </div>
+
+  </div>
+</section>
+  </main>
+  
+  <footer class="site-footer" dir="rtl" aria-label="כותרת תחתית של האתר"><div class="footer-container"><div class="footer-top"><div class="footer-col footer-brand"><a href="/" class="footer-logo-link"><img src="/assets/mybee-energy-management-hvac-control-systems-logo.webp" alt="Mybee" class="logo"></a><p class="footer-tagline">מערכות ניהול אנרגיה וסביבה חכמות — פתרונות HVAC מתקדמים לבתי מלון, מסעדות ומתקני תעשייה. חוסכים אנרגיה, מגינים על הסביבה, ומפשטים את הניהול.</p><div class="footer-badge"><i class="fas fa-leaf"></i><span>חיסכון אנרגטי מוכח</span></div></div><div class="footer-col footer-links"><h3 class="footer-heading">ניווט מהיר</h3><ul class="footer-nav"><li><a href="/">בית</a></li><li><a href="/solutions">פתרונות</a></li><li><a href="/applications">יישומים</a></li><li><a href="/contact">צור קשר</a></li></ul></div><div class="footer-col footer-contact-col"><h3 class="footer-heading">צרו קשר</h3><ul class="footer-contact"><li><span class="contact-icon"><i class="fas fa-envelope"></i></span><span class="contact-text"><a href="mailto:[business_email]">[business_email]</a></span></li><li><span class="contact-icon"><i class="fas fa-phone"></i></span><span class="contact-text"><a href="tel:[business_phone]">[business_phone]</a></span></li><li><a href="/"><span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span><span class="contact-text">[business_address]</span></a></li></ul></div><div class="footer-col footer-social-col"><h3 class="footer-heading">עקבו אחרינו</h3><div class="footer-social"></div><div class="footer-hours"><h4 class="footer-hours-title">שעות פעילות</h4><ul class="hours-list"><li><a href="/"><span class="day">ראשון — חמישי</span><span class="time">08:00 – 17:00</span></a></li><li><a href="/"><span class="day">שישי</span><span class="time">08:00 – 13:00</span></a></li><li><a href="/"><span class="day">שבת</span><span class="time closed">סגור</span></a></li></ul></div></div></div><div class="footer-bottom"><div class="footer-bottom-inner"><p class="footer-copyright">© 2026 Mybee. כל הזכויות שמורות.</p><div class="footer-legal"><a href="/privacy">מדיניות פרטיות</a><span class="footer-divider">|</span><a href="/terms">תנאי שימוש</a><span class="footer-divider">|</span><a href="/accessibility">נגישות</a><span class="footer-divider">|</span><a href="https://zappy5.com" target="_blank" class="zappy-attribution">נוצר באמצעות Zappy</a></div></div></div></div></footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <div data-integration="accessibility:toolbar"></div>
+
+    <script src="/script.js"></script>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+</body>
+</html>
