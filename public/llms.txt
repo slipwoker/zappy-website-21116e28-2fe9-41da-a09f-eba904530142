@@ -7,33 +7,33 @@
 ## Pages
 
 ### בית
-https://mybee-21116e28.zappy5.app
+https://example.com
 Mybee מובילה מהפכה בניהול אנרגיה חכם למערכות מיזוג, קירור ודודי קיטור. בקרי חיסכון אנרגיה מיזוג אוויר שמשנים את כללי המשחק לעסקים וחברות תעשייתיות.
 
 ### פתרונות
-https://mybee-21116e28.zappy5.app/solutions
+https://example.com/solutions
 גלו את מגוון פתרונות הבקרה החכמים של Mybee למיזוג אוויר, מקפיאים ודודי קיטור. טכנולוגיה מתקדמת לחיסכון אמיתי בצריכת האנרגיה של העסק שלכם.
 
 ### יישומים
-https://mybee-21116e28.zappy5.app/applications
+https://example.com/applications
 ממחסני קירור ועד מפעלים תעשייתיים — Mybee מספקת יישומי ניטור טמפרטורה במקפיאים ומקררים ובקרת אנרגיה מתקדמת לכל סביבת עבודה מסחרית ותעשייתית.
 
 ### צור קשר
-https://mybee-21116e28.zappy5.app/contact
+https://example.com/contact
 צרו קשר עם מומחי האנרגיה של Mybee וקבלו ייעוץ מקצועי מותאם אישית לעסק שלכם. נשמח לעזור לכם לבחור את בקר החיסכון הנכון ולהתחיל לצמצם עלויות אנרגיה.
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://mybee-21116e28.zappy5.app/privacy
+https://example.com/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://mybee-21116e28.zappy5.app/terms
+https://example.com/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://mybee-21116e28.zappy5.app/accessibility
+https://example.com/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
@@ -43,8 +43,8 @@ Information about WCAG compliance and accessibility features.
 - (No contact details configured yet.)
 
 ### Contact form
-- URL: https://mybee-21116e28.zappy5.app/contact
-- Endpoint: https://mybee-21116e28.zappy5.app/api/email/contact-form
+- URL: https://example.com/contact
+- Endpoint: https://example.com/api/email/contact-form
 - Method: POST
 - Content-Type: application/json
 - Fields:
@@ -82,6 +82,6 @@ Energy Management & HVAC Control Systems
 
 # Machine-readable feeds
 
-- Sitemap (XML): https://mybee-21116e28.zappy5.app/sitemap.xml
-- Robots: https://mybee-21116e28.zappy5.app/robots.txt
-- Flattened page text (for LLMs): https://mybee-21116e28.zappy5.app/llms-full.txt
+- Sitemap (XML): https://example.com/sitemap.xml
+- Robots: https://example.com/robots.txt
+- Flattened page text (for LLMs): https://example.com/llms-full.txt

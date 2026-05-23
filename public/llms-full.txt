@@ -2,13 +2,13 @@
 
 A B2B-focused company specializing in smart energy-saving controllers for HVAC systems, refrigeration and freezer room alert controllers, and hot water and steam boiler management solutions. The brand operates in the industrial and commercial energy efficiency space, offering intelligent control systems that reduce energy consumption and improve operational safety across cooling, heating, and climate control environments.
 
-Source: https://mybee-21116e28.zappy5.app
+Source: https://example.com
 
 ---
 
 ## Mybee — Mybee
 
-URL: https://mybee-21116e28.zappy5.app
+URL: https://example.com
 Description: Mybee מובילה מהפכה בניהול אנרגיה חכם למערכות מיזוג, קירור ודודי קיטור. בקרי חיסכון אנרגיה מיזוג אוויר שמשנים את כללי המשחק לעסקים וחברות תעשייתיות.
 
 Mybee — Mybee
@@ -421,7 +421,7 @@ Mybee מציעה בקרים חכמים לעסקים ומתקנים תעשיית�
 
 ## פתרונות בקרה שהופכים עלויות לחיסכון — Mybee
 
-URL: https://mybee-21116e28.zappy5.app/solutions
+URL: https://example.com/solutions
 Description: גלו את מגוון פתרונות הבקרה החכמים של Mybee למיזוג אוויר, מקפיאים ודודי קיטור. טכנולוגיה מתקדמת לחיסכון אמיתי בצריכת האנרגיה של העסק שלכם.
 
 פתרונות בקרה שהופכים עלויות לחיסכון — Mybee
@@ -971,7 +971,7 @@ Mybee מציעה פתרונות בקרה מתקדמים לעסקים, מלונו
 
 ## יישומים תעשייתיים שמשדרגים כל מתקן — Mybee
 
-URL: https://mybee-21116e28.zappy5.app/applications
+URL: https://example.com/applications
 Description: ממחסני קירור ועד מפעלים תעשייתיים — Mybee מספקת יישומי ניטור טמפרטורה במקפיאים ומקררים ובקרת אנרגיה מתקדמת לכל סביבת עבודה מסחרית ותעשייתית.
 
 יישומים תעשייתיים שמשדרגים כל מתקן — Mybee
@@ -1499,7 +1499,7 @@ Description: ממחסני קירור ועד מפעלים תעשייתיים — 
 
 ## דברו איתנו ותתחילו לחסוך כבר היום — Mybee
 
-URL: https://mybee-21116e28.zappy5.app/contact
+URL: https://example.com/contact
 Description: צרו קשר עם מומחי האנרגיה של Mybee וקבלו ייעוץ מקצועי מותאם אישית לעסק שלכם. נשמח לעזור לכם לבחור את בקר החיסכון הנכון ולהתחיל לצמצם עלויות אנרגיה.
 
 דברו איתנו ותתחילו לחסוך כבר היום — Mybee
@@ -1917,7 +1917,7 @@ Description: צרו קשר עם מומחי האנרגיה של Mybee וקבלו 
 
 ## מדיניות פרטיות
 
-URL: https://mybee-21116e28.zappy5.app/privacy
+URL: https://example.com/privacy
 Description: מדיניות הפרטיות שלנו - כיצד אנו אוספים, משתמשים ומגנים על המידע שלכם
 
 מדיניות פרטיות
@@ -2118,7 +2118,7 @@ Mybee ("החברה", "אנו", "שלנו") מחויבת להגן על פרטיו
 
 ## הצהרת נגישות
 
-URL: https://mybee-21116e28.zappy5.app/accessibility
+URL: https://example.com/accessibility
 Description: הצהרת הנגישות שלנו - מחויבותנו לנגישות דיגיטלית
 
 הצהרת נגישות
@@ -2328,7 +2328,7 @@ Mybee מחויבת להנגיש את השירותים לכלל הציבור. א�
 
 ## תנאי שימוש
 
-URL: https://mybee-21116e28.zappy5.app/terms
+URL: https://example.com/terms
 Description: תנאי השימוש באתר - הזכויות והחובות של המשתמשים
 
 תנאי שימוש
