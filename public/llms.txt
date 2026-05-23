@@ -40,7 +40,10 @@ Information about WCAG compliance and accessibility features.
 
 ## How to Contact Us
 
-- (No contact details configured yet.)
+- Email: info@mybee.co.ik
+- Phone: 0535250604
+- Phone (tel): tel:0535250604
+- Address: אילת, ישראל
 
 ### Contact form
 - URL: https://example.com/contact

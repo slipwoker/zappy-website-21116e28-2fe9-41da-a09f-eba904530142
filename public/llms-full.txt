@@ -395,7 +395,7 @@ Mybee מציעה בקרים חכמים לעסקים ומתקנים תעשיית�
 
 
 מערכות ניהול אנרגיה וסביבה חכמות — פתרונות HVAC מתקדמים לבתי מלון, מסעדות ומתקני תעשייה. חוסכים אנרגיה, מגינים על הסביבה, ומפשטים את הניהול.
-חיסכון אנרגטי מוכח
+חיסכון אנרגטי מוכן
 ### ניווט מהיר
 - בית
 - פתרונות
@@ -403,9 +403,9 @@ Mybee מציעה בקרים חכמים לעסקים ומתקנים תעשיית�
 - צור קשר
 
 ### צרו קשר
-- [business_email]
-- [business_phone]
-- [business_address]
+- info@mybee.co.ik
+- 0535250604
+- אילת, ישראל
 
 ### עקבו אחרינו
 
@@ -953,9 +953,9 @@ Mybee מציעה פתרונות בקרה מתקדמים לעסקים, מלונו
 - צור קשר
 
 ### צרו קשר
-- [business_email]
-- [business_phone]
-- [business_address]
+- info@mybee.co.ik
+- 0535250604
+- אילת, ישראל
 
 ### עקבו אחרינו
 
@@ -1481,9 +1481,9 @@ Description: ממחסני קירור ועד מפעלים תעשייתיים — 
 - צור קשר
 
 ### צרו קשר
-- [business_email]
-- [business_phone]
-- [business_address]
+- info@mybee.co.ik
+- 0535250604
+- אילת, ישראל
 
 ### עקבו אחרינו
 
@@ -1681,8 +1681,6 @@ Description: צרו קשר עם מומחי האנרגיה של Mybee וקבלו 
 
 
 זמן מענה: עד יום עסקים אחד
-
-
 
 
 
@@ -1899,9 +1897,9 @@ Description: צרו קשר עם מומחי האנרגיה של Mybee וקבלו 
 - צור קשר
 
 ### צרו קשר
-- [business_email]
-- [business_phone]
-- [business_address]
+- info@mybee.co.ik
+- 0535250604
+- אילת, ישראל
 
 ### עקבו אחרינו
 
@@ -2073,11 +2071,11 @@ Mybee ("החברה", "אנו", "שלנו") מחויבת להגן על פרטיו
 
 - חברה: Mybee
 
-- אימייל: [business_email]
+- אימייל: info@mybee.co.ik
 
-- טלפון: [business_phone]
+- טלפון: 0535250604
 
-- כתובת: [business_address]
+- כתובת: אילת, ישראל
 
 
 
@@ -2100,9 +2098,9 @@ Mybee ("החברה", "אנו", "שלנו") מחויבת להגן על פרטיו
 - צור קשר
 
 ### צרו קשר
-- [business_email]
-- [business_phone]
-- [business_address]
+- info@mybee.co.ik
+- 0535250604
+- אילת, ישראל
 
 ### עקבו אחרינו
 
@@ -2282,9 +2280,9 @@ Mybee מחויבת להנגיש את השירותים לכלל הציבור. א�
 
 - חברה: Mybee
 
-- אימייל: [business_email]
+- אימייל: info@mybee.co.ik
 
-- טלפון: [business_phone]
+- טלפון: 0535250604
 
 
 
@@ -2310,9 +2308,9 @@ Mybee מחויבת להנגיש את השירותים לכלל הציבור. א�
 - צור קשר
 
 ### צרו קשר
-- [business_email]
-- [business_phone]
-- [business_address]
+- info@mybee.co.ik
+- 0535250604
+- אילת, ישראל
 
 ### עקבו אחרינו
 
@@ -2515,11 +2513,11 @@ Mybee מספקת Energy Management & HVAC Control Systems דרך האתר. הש�
 
 - חברה: Mybee
 
-- אימייל: [business_email]
+- אימייל: info@mybee.co.ik
 
-- טלפון: [business_phone]
+- טלפון: 0535250604
 
-- כתובת: [business_address]
+- כתובת: אילת, ישראל
 
 
 
@@ -2539,9 +2537,9 @@ Mybee מספקת Energy Management & HVAC Control Systems דרך האתר. הש�
 - צור קשר
 
 ### צרו קשר
-- [business_email]
-- [business_phone]
-- [business_address]
+- info@mybee.co.ik
+- 0535250604
+- אילת, ישראל
 
 ### עקבו אחרינו
 
